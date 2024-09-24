@@ -1,0 +1,63 @@
+---
+
+# - name: Create workflow job template for "{{ rhel_env_workflow_name }}"
+#   awx.awx.workflow_job_template:
+#     name: "{{ rhel_env_workflow_name }}"
+#     inventory: "{{ rhel_inventory_name }}"
+#     organization: "{{ organization_name }}"
+#     state: present
+#     description: "{{ aap_objects_build_repo }}"
+#   register: rhel_workflow 
+
+# # Create workflow nodes
+# - name: Create workflow nodes 
+#   awx.awx.workflow_job_template_node:
+#     workflow: "{{ rhel_workflow.id }}"
+#     identifier: "{{ item }}"
+#     organization: "{{ organization_name }}"
+#     unified_job_template: "job-{{ item }}"
+#     state: present
+#   loop:
+#     - "{{ rhel_env_phase_1 }}"
+#     - "{{ rhel_env_phase_2 }}"
+#     - "{{ rhel_env_phase_3 }}"
+
+# - name: "Create {{ rhel_change_approval_node_name }} approval node"
+#   awx.awx.workflow_job_template_node:
+#     workflow: "{{ rhel_workflow.id }}"
+#     identifier: "{{ rhel_change_approval_node_name }}"
+#     organization: "{{ organization_name }}"
+#     state: present
+#     approval_node:
+#         description: "Proceed with change?"
+#         name: "{{ rhel_change_approval_node_name }}"
+#         timeout: 3600 # The amount of time (in seconds) before the approval node expires and fails.
+
+# # Stitch job templates into a workflow
+
+# - name: "Link job-{{ rhel_env_phase_1 }} workflow node to {{ rhel_change_approval_node_name }} node"
+#   awx.awx.workflow_job_template_node:
+#     workflow: "{{ rhel_workflow.id }}"
+#     identifier: "{{ rhel_env_phase_1 }}"
+#     organization: "{{ organization_name }}"
+#     success_nodes: 
+#       - "{{ rhel_change_approval_node_name }}"  # When successful moves to this
+
+# - name: "Link {{ rhel_change_approval_node_name }} node to {{ rhel_env_phase_2 }} node"
+#   awx.awx.workflow_job_template_node:
+#     workflow: "{{ rhel_workflow.id }}"
+#     identifier: "{{ rhel_change_approval_node_name }}"
+#     organization: "{{ organization_name }}"
+#     success_nodes: 
+#       - "{{ rhel_env_phase_2 }}" # When successful moves to this
+
+# - name: "Link {{ rhel_env_phase_2 }} node to {{ rhel_env_phase_3 }} node"
+#   awx.awx.workflow_job_template_node:
+#     workflow: "{{ rhel_workflow.id }}"
+#     identifier: "{{ rhel_env_phase_2 }}"
+#     organization: "{{ organization_name }}"
+#     success_nodes: 
+#       - "{{ rhel_env_phase_3 }}" # When successful moves to this
+  
+# # Should I think of kick-starting this automatically?
+# # Not in the scope for now :)
