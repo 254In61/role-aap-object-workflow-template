@@ -38,4 +38,4 @@
     organization: "{{ organization_name }}"
     success_nodes: 
       - "{{ item[1] }}"  # When successful moves to this
-    loop: "{{ nodes_linking_list }}"
+  loop: "{{ nodes_linking_list }}"
