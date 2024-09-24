@@ -19,9 +19,9 @@
     state: present
   loop: "{{ appc_config_backup_job_tmplts_list }}"
 
-# - name: "Create {{ rhel_change_approval_node_name }} approval node"
+# - name: "Create approval node"
 #   awx.awx.workflow_job_template_node:
-#     workflow: "{{ rhel_workflow.id }}"
+#     workflow: "{{ workflow_name }}"
 #     identifier: "{{ rhel_change_approval_node_name }}"
 #     organization: "{{ organization_name }}"
 #     state: present
@@ -31,30 +31,11 @@
 #         timeout: 3600 # The amount of time (in seconds) before the approval node expires and fails.
 
 # # Stitch job templates into a workflow
-
-# - name: "Link job-{{ rhel_env_phase_1 }} workflow node to {{ rhel_change_approval_node_name }} node"
-#   awx.awx.workflow_job_template_node:
-#     workflow: "{{ rhel_workflow.id }}"
-#     identifier: "{{ rhel_env_phase_1 }}"
-#     organization: "{{ organization_name }}"
-#     success_nodes: 
-#       - "{{ rhel_change_approval_node_name }}"  # When successful moves to this
-
-# - name: "Link {{ rhel_change_approval_node_name }} node to {{ rhel_env_phase_2 }} node"
-#   awx.awx.workflow_job_template_node:
-#     workflow: "{{ rhel_workflow.id }}"
-#     identifier: "{{ rhel_change_approval_node_name }}"
-#     organization: "{{ organization_name }}"
-#     success_nodes: 
-#       - "{{ rhel_env_phase_2 }}" # When successful moves to this
-
-# - name: "Link {{ rhel_env_phase_2 }} node to {{ rhel_env_phase_3 }} node"
-#   awx.awx.workflow_job_template_node:
-#     workflow: "{{ rhel_workflow.id }}"
-#     identifier: "{{ rhel_env_phase_2 }}"
-#     organization: "{{ organization_name }}"
-#     success_nodes: 
-#       - "{{ rhel_env_phase_3 }}" # When successful moves to this
-  
-# # Should I think of kick-starting this automatically?
-# # Not in the scope for now :)
+- name: "Link {{ item[0] }} workflow node to {{ item[1] }} node"
+  ansible.controller.workflow_job_template_node:
+    workflow: "{{ workflow_name }}"
+    identifier: "{{ item[0] }}"
+    organization: "{{ organization_name }}"
+    success_nodes: 
+      - "{{ item[1] }}"  # When successful moves to this
+    loop: "{{ nodes_linking_list }}"
