@@ -1,26 +1,23 @@
 ---
 
-# - name: Create workflow job template for "{{ rhel_env_workflow_name }}"
-#   awx.awx.workflow_job_template:
-#     name: "{{ rhel_env_workflow_name }}"
-#     inventory: "{{ rhel_inventory_name }}"
-#     organization: "{{ organization_name }}"
-#     state: present
-#     description: "{{ aap_objects_build_repo }}"
-#   register: rhel_workflow 
+- name: Create workflow template
+  ansible.controller.workflow_job_template:
+    name: "{{ workflow_name }}"
+    inventory: "{{ inventory_name }}"
+    organization: "{{ organization_name }}"
+    state: present
+    description: "{{ common_description }}"
+  register: rhel_workflow 
 
-# # Create workflow nodes
-# - name: Create workflow nodes 
-#   awx.awx.workflow_job_template_node:
-#     workflow: "{{ rhel_workflow.id }}"
-#     identifier: "{{ item }}"
-#     organization: "{{ organization_name }}"
-#     unified_job_template: "job-{{ item }}"
-#     state: present
-#   loop:
-#     - "{{ rhel_env_phase_1 }}"
-#     - "{{ rhel_env_phase_2 }}"
-#     - "{{ rhel_env_phase_3 }}"
+# Create workflow nodes
+- name: Create workflow nodes 
+  awx.awx.workflow_job_template_node:
+    workflow: "{{ workflow_name.id }}"
+    identifier: "{{ item }}"
+    organization: "{{ organization_name }}"
+    unified_job_template: "{{ item }}"
+    state: present
+  loop: "{{ appc_config_backup_job_tmplts_list }}"
 
 # - name: "Create {{ rhel_change_approval_node_name }} approval node"
 #   awx.awx.workflow_job_template_node:
