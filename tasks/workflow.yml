@@ -11,8 +11,8 @@
 
 # Create workflow nodes
 - name: Create workflow nodes 
-  awx.awx.workflow_job_template_node:
-    workflow: "{{ workflow_name.id }}"
+  ansible.controller.workflow_job_template_node:
+    workflow: "{{ workflow_name }}"
     identifier: "{{ item }}"
     organization: "{{ organization_name }}"
     unified_job_template: "{{ item }}"
