@@ -2,8 +2,8 @@
 - name: Create workflow template
   ansible.controller.workflow_job_template:
     name: "{{ workflow_name }}"
-    inventory: "{{ inventory_name }}"
-    organization: "{{ organization_name }}"
+    inventory: "{{ inventory }}"
+    organization: "{{ organization }}"
     state: present
     description: "{{ common_description }}"
   register: workflow 
@@ -13,10 +13,10 @@
   ansible.controller.workflow_job_template_node:
     workflow: "{{ workflow_name }}"
     identifier: "{{ item }}"
-    organization: "{{ organization_name }}"
+    organization: "{{ organization }}"
     unified_job_template: "{{ item }}"
     state: present
-  loop: "{{ appc_config_backup_job_tmplts_list }}"
+  loop: "{{ job_tmplts_list }}"
 
 # - name: "Create approval node"
 #   awx.awx.workflow_job_template_node:
