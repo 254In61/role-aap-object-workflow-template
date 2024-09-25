@@ -1,7 +1,7 @@
 ---
 - name: Create workflow template
   ansible.controller.workflow_job_template:
-    name: "{{ workflow_name }}"
+    name: "{{ workflow }}"
     inventory: "{{ inventory }}"
     organization: "{{ organization }}"
     state: present
@@ -11,7 +11,7 @@
 # Create workflow nodes
 - name: Create workflow nodes 
   ansible.controller.workflow_job_template_node:
-    workflow: "{{ workflow_name }}"
+    workflow: "{{ workflow }}"
     identifier: "{{ item }}"
     organization: "{{ organization }}"
     unified_job_template: "{{ item }}"
@@ -20,7 +20,7 @@
 
 # - name: "Create approval node"
 #   awx.awx.workflow_job_template_node:
-#     workflow: "{{ workflow_name }}"
+#     workflow: "{{ workflow }}"
 #     identifier: "{{ rhel_change_approval_node_name }}"
 #     organization: "{{ organization_name }}"
 #     state: present
@@ -32,9 +32,9 @@
 # # Stitch job templates into a workflow
 - name: "Link {{ item[0] }} workflow node to {{ item[1] }} node"
   ansible.controller.workflow_job_template_node:
-    workflow: "{{ workflow_name }}"
+    workflow: "{{ workflow }}"
     identifier: "{{ item[0] }}"
-    organization: "{{ organization_name }}"
+    organization: "{{ organization }}"
     success_nodes: 
       - "{{ item[1] }}"  # When successful moves to this
   loop: "{{ nodes_linking_list }}"

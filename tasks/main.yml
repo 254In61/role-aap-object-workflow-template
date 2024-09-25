@@ -1,4 +1,4 @@
 ---
 - name: Import workflow tasks
   ansible.builtin.import_tasks: build.yml
-  when: workflow | bool
+  when: build | bool

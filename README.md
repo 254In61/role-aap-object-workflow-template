@@ -12,7 +12,7 @@ Step 1: Install the role in your environment.
 
 Step 2: Define your variables in the structure below
 
-  - workflow           : true/false # Bool value to switch role on off.
+  - build              : true/false # Bool value to switch role on off.
   - workflow_name      : Name of the workflow you want to build
   - inventory          : Name of the inventory to run against
   - organization       : Name of the organization
