@@ -1,5 +1,4 @@
 ---
-
 - name: Create workflow template
   ansible.controller.workflow_job_template:
     name: "{{ workflow_name }}"
@@ -7,7 +6,7 @@
     organization: "{{ organization_name }}"
     state: present
     description: "{{ common_description }}"
-  register: rhel_workflow 
+  register: workflow 
 
 # Create workflow nodes
 - name: Create workflow nodes 
