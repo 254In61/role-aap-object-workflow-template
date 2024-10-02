@@ -1,0 +1,21 @@
+---
+appc_config_backup_workflow: appc-network-config-backup-workflow
+
+appc_config_backup_job_tmplts_list:
+  -  "{{ fortios_config_backup_job_template_name }}"
+  -  "{{ cisco_config_backup_job_template_name }}"
+  -  "{{ junos_config_backup_job_template_name }}"
+  -  "{{ f5_config_backup_job_template_name }}"
+
+cisco_to_junos:
+  - "{{ cisco_config_backup_job_template_name }}"
+  - "{{ junos_config_backup_job_template_name }}"
+
+junos_to_fortios:
+  - "{{ junos_config_backup_job_template_name }}"
+  -  "{{ fortios_config_backup_job_template_name }}"
+
+fortios_to_f5:
+  -  "{{ fortios_config_backup_job_template_name }}"
+  -  "{{ f5_config_backup_job_template_name }}"
+  
